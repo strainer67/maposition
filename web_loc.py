@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from base64 import b64decode
 from datetime import datetime, timedelta
 import hashlib
 from itertools import cycle
@@ -24,15 +25,22 @@ class Content():
         self.utc_time = ""
         self.latitude = ""
         self.longitude = ""
-        self.user_id = ""
+        self.auth = ""
+        self.username = ""
+        self.password = ""
 
     def parse(self):
         try:
             self.utc_time = self.request.args.get('time')
             self.latitude = self.request.args.get('lat')
             self.longitude = self.request.args.get('lon')
-            self.user_id = self.request.args.get('user_id')
         except IndexError:
+            pass
+        try:
+            self.auth = self.request.headers['Authorization'].split()[1]
+            self.auth = b64decode(self.auth).decode(encoding='utf-8')
+            self.username, self.password = self.auth.split(':')
+        except KeyError:
             pass
 
     def validate(self):
@@ -42,9 +50,8 @@ class Content():
             self.latitude = float(self.latitude)
             self.longitude = float(self.longitude)
             if int(abs(self.latitude)) in range(0, 90) and\
-                int(abs(self.longitude)) in range(0, 180) and\
-                 isclose(int(self.user_id), float(self.user_id)):
-                self.user_id = int(self.user_id)
+               int(abs(self.longitude)) in range(0, 180) and\
+               self.username != "" and self.password != "":
                 self.valide = True
         except ValueError:
             pass
@@ -53,6 +60,7 @@ class Content():
         self.latitude = round(self.latitude, 5)
         self.longitude = round(self.longitude, 5)
         self.utc_time = self.utc_time.strftime('%d-%m-%Y %H:%M:%S')
+
 
 def fill_geojson(time, latitude, longitude):
     """
@@ -151,12 +159,18 @@ def feed_db():
     content.validate()
     if content.valide:
         app.logger.info('The content of the request is valid')
+        hash_username = hashlib.sha256(bytes(content.username, 'utf-8')).hexdigest()
+        hash_password = hashlib.sha256(bytes(content.password, 'utf-8')).hexdigest()
         content.customize()
         with sqlite3.connect('db/USERS_POSITIONS.db') as conn:
+            cursor = conn.execute(f"SELECT id FROM users where username = '{hash_username}' and password = '{hash_password}'")
             try:
-                conn.execute(f"INSERT INTO positions(utc_time, latitude, longitude, user_id) VALUES('{content.utc_time}', {content.latitude}, {content.longitude}, {content.user_id})")
-            except sqlite3.IntegrityError:
-                return make_response("Forbidden", 403)
+                record = list(cursor)[0]
+                user_id = record[0]
+                conn.execute(f"INSERT INTO positions(utc_time, latitude, longitude, user_id) VALUES('{content.utc_time}', {content.latitude}, {content.longitude}, {user_id})")
+            except IndexError:
+                app.logger.info('an unauthorized person tries to feed the database')
+                return make_response(render_template('unauthorized.html'), 401)
         return make_response(request.query_string, 201)
     else:
         app.logger.info('The content of the request is invalid')
