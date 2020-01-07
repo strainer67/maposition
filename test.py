@@ -18,4 +18,5 @@ if __name__ == "__main__":
         print(content)
         data = f'{url_base}{content}'
         r = requests.get(data, auth=(username, password))
+        print(r.status_code)
         time.sleep(20)
