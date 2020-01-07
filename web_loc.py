@@ -101,16 +101,16 @@ def login():
         password_form = bytes(request.form['password'], 'utf-8')
         hash_password_form = hashlib.sha256(password_form).hexdigest()
         with sqlite3.connect('db/USERS_POSITIONS.db') as conn:
-            cursor = conn.execute("SELECT username, password FROM users")
-            user = list(cursor)
-        for username, password in user:
-            if hash_username_form == username and hash_password_form == password:
-                session.permanent = True
-                session['username'] = request.form['username']
-                app.logger.info('Logged in successfully')
-                return redirect(url_for("map_my_position"), code=302)
-        app.logger.warning('Invalid login')
-        return render_template('login.html')
+            cursor = conn.execute(f"SELECT username, password FROM users WHERE username = '{hash_username_form}' and password = '{hash_password_form}'")
+        try:
+            record = list(cursor)[0]
+        except IndexError:
+            app.logger.warning('Invalid login')
+            return make_response((render_template('login.html'), 201))
+        app.logger.info('Logged in successfully')
+        session.permanent = True
+        session['username'] = request.form['username']
+        return redirect(url_for("map_my_position"), code=302)
 
 
 @app.route('/logout', methods=['GET'])
@@ -146,7 +146,7 @@ def get_position():
 @app.route('/my_position', methods=['GET'])
 def map_my_position():
     if 'username' in session:
-        return render_template('carte.html')
+        return make_response((render_template('carte.html'), 201))
     else:
         return redirect(url_for("login"), code=302)
 
@@ -170,11 +170,11 @@ def feed_db():
                 conn.execute(f"INSERT INTO positions(utc_time, latitude, longitude, user_id) VALUES('{content.utc_time}', {content.latitude}, {content.longitude}, {user_id})")
             except IndexError:
                 app.logger.info('an unauthorized person tries to feed the database')
-                return make_response(render_template('unauthorized.html'), 401)
-        return make_response(request.query_string, 201)
+                return make_response((render_template('unauthorized.html'), 401))
+        return make_response((request.query_string, 200))
     else:
         app.logger.info('The content of the request is invalid')
-        return make_response("Forbidden", 403)
+        return make_response((render_template('badrequest.html'), 400))
 
 
 if __name__ == "__main__":
