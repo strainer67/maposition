@@ -1,4 +1,63 @@
-<link rel="stylesheet" href="/static/style.css" type="text/css">
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Login Page</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<style>
+			body {background-color:cornflowerblue;
+				}
+			h1 {text-align: center;
+				}
+			.container {
+				padding-top: 15%;
+			}
+		</style>
+	</head>
+	<body background="#CC0066">
+		<div class="container">
+			<form action="/login" method="POST">
+				<h1>Authentification</h1>
+				<div class="form-group">
+					<label for="Identifiant">Identifiant</label>
+					<input type="text" class="form-control" id="Identifiant" placeholder="Identifiant" name="username">
+				</div>
+				<div class="form-group">
+					<label for="Mot de passe">Mot de passe</label>
+					<input type="password" class="form-control" id="Mot de passe" placeholder="Mot de passe" name="password">
+				</div>
+				<button type="submit" class="btn btn-primary">Connexion</button>
+			</form>
+		</div>
+		<script src="/static/bootstrap/jquery-3.4.1.slim.min.js"></script>
+		<script src="/static/bootstrap/popper.min.js"></script>
+		<script src="/static/bootstrap/bootstrap.min.js"></script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--link rel="stylesheet" href="/static/style.css" type="text/css" >
 
 
 <form action="/login" method="POST">
@@ -19,6 +78,6 @@
 </div>
 </div>
 </div>
-</form>
+</form-->
 
 
