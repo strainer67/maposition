@@ -4,19 +4,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Login Page</title>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-		<style>
-			body {background-color:cornflowerblue;
-				}
-			h1 {text-align: center;
-				}
-			.container {
-				padding-top: 15%;
-			}
-		</style>
+		<link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/style_login.css">
 	</head>
-	<body background="#CC0066">
-		<div class="container">
+	<body>
+		<div class="container col-xs-12 col-sm-8 col-lg-3">
 			<form action="/login" method="POST">
 				<h1>Authentification</h1>
 				<div class="form-group">
@@ -35,49 +27,3 @@
 		<script src="/static/bootstrap/bootstrap.min.js"></script>
 	</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--link rel="stylesheet" href="/static/style.css" type="text/css" >
-
-
-<form action="/login" method="POST">
-<div class="login">
-<div class="login-screen">
-<div class="app-title">
-<h1>Login</h1>
-</div>
-<div class="login-form">
-<div class="control-group">
-				<input type="text" class="login-field" value="" placeholder="username" name="username">
-<label class="login-field-icon fui-user" for="login-name"></label></div>
-<div class="control-group">
-				<input type="password" class="login-field" value="" placeholder="password" name="password">
-<label class="login-field-icon fui-lock" for="login-pass"></label></div>
-<input type="submit" value="Log in" class="btn btn-primary btn-large btn-block">
-
-</div>
-</div>
-</div>
-</form-->
-
-
