@@ -3,26 +3,8 @@
     <head>
         <title>Carte</title>
         <meta charset="utf-8">
-        <!-- Nous chargeons les fichiers CDN de Leaflet. Le CSS AVANT le JS -->
         <link rel="stylesheet" href="/static/leaflet/1.5.1/leaflet.css"/>
-        <style>
-            body {
-                padding: 0;
-                margin: 0;
-            }
-            html, body {
-                height: 100%;
-                width: 100%;
-            }
-            #map{
-                height: 95%;
-                width: 100%;
-            }
-            #portalwelcomInner{
-                height: 5%;
-                width: 100%;
-            }
-        </style> 
+        <link rel="stylesheet" href="/static/style_carte.css"> 
          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     </head>
     <body>
@@ -32,7 +14,6 @@
         </form>
     </div>
     <div id="map"></div>
-        <!-- Fichiers Javascript -->
         <script src="/static/leaflet/1.5.1/leaflet.js"></script>
         <script src="/static/leaflet/realtime/leaflet-realtime.min.js"></script>
         <script src="/static/current_position.js"></script>
