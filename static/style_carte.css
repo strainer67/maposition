@@ -10,7 +10,19 @@ html, body {
     height: 95%;
     width: 100%;
 }
-#portalwelcomInner{
+@media only screen and (min-height: 1000px) {
+#logout_panel{
     height: 5%;
     width: 100%;
+    background-color: cornflowerblue;
+}
+.button{
+    background-color:rgb(86, 91, 95);
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-size: 20px;
+    color: white;
+    right: 0px;
+    position: absolute;
+}
 }
