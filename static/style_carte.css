@@ -27,44 +27,44 @@ html, body {
 }
 }
 @media only screen and (min-height: 750px) and (max-height: 999.98px) {
-    #map{
-        height: 94%;
-        width: 100%;
+#map{
+    height: 94%;
+    width: 100%;
+}
+#logout_panel{
+    height: 6%;
+    width: 100%;
+    background-color: cornflowerblue;
+}
+.button{
+    background-color:rgb(86, 91, 95);
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 18px;
+    color: white;
+    right: 0px;
+    position: absolute;
     }
-    #logout_panel{
-        height: 6%;
-        width: 100%;
-        background-color: cornflowerblue;
-    }
-    .button{
-        background-color:rgb(86, 91, 95);
-        border-radius: 8px;
-        padding: 10px 24px;
-        font-size: 18px;
-        color: white;
-        right: 0px;
-        position: absolute;
-    }
-    }
+}
 @media only screen and (min-height: 550.02px) and (max-height: 749.98px) {
-    #map{
-        height: 93%;
-        width: 100%;
-    }
-    #logout_panel{
-        height: 7%;
-        width: 100%;
-        background-color: cornflowerblue;
-    }
-    .button{
-        background-color:rgb(86, 91, 95);
-        border-radius: 8px;
-        padding: 8px 20px;
-        font-size: 16px;
-        color: white;
-        right: 0px;
-        position: absolute;
-    }
+#map{
+    height: 93%;
+    width: 100%;
+}
+#logout_panel{
+    height: 7%;
+    width: 100%;
+    background-color: cornflowerblue;
+}
+.button{
+    background-color:rgb(86, 91, 95);
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 16px;
+    color: white;
+    right: 0px;
+    position: absolute;
+}
 }
 @media only screen and (max-height: 550px) {
 #map{
