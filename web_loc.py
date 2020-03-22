@@ -67,7 +67,7 @@ def fill_geojson(time, latitude, longitude):
     id_feature = str(int(timestamp))
     my_geojson = {"type": "Feature",
                   "properties": {
-                      "popupContent": f"UTC: {time} latitude: {latitude} longitude {longitude}",
+                      "popupContent": f"UTC: {time}<br>latitude: {latitude}<br>longitude {longitude}",
                       "id": id_feature
                   },
                   "geometry": {
