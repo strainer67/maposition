@@ -11,4 +11,4 @@ if __name__ == "__main__":
     with sqlite3.connect('USERS_POSITIONS.db') as conn:
         cur = conn.cursor()
         cur.execute('CREATE TABLE users(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)')
-        cur.execute('CREATE TABLE positions(id INTEGER PRIMARY KEY AUTOINCREMENT, utc_time TEXT, latitude REAL, longitude REAL, user_id INTEGER)')
+        cur.execute('CREATE TABLE positions(id INTEGER PRIMARY KEY AUTOINCREMENT, utc_time BLOB, latitude BLOB, longitude BLOB, iv BLOB, user_id INTEGER)')
