@@ -1,9 +1,9 @@
 # Summary:
 **MAPOSITION** is a Web application displaying the position of a mobile on a map in quasi-realtime.  
 An authentification step is needed to know the position of the mobile: the user has to log on its session with its username and its password.  
-![alt text](/img/login.png "login page")  
+![login page](/img/login.png)  
 Once this step is done a marker representing the mobile is displayed on the map. A click on the marker gives information about latitude, longitude and UTC time.  
-![alt text](/img/maposition.png "map")  
+![map](/img/maposition.png)  
 Some websites propose hosting like [PythonAnywhere.com](https://www.pythonanywhere.com/)
 ## Prerequisite
 This application has a sense only if a mobile send positions. A position has to be sent via a HTTP request (query string). By default, it has to respect this nomenclure:
@@ -21,7 +21,7 @@ Some applications exist to send GPS position via HTTP request. As an example, th
 When a valid HTTP request is received by the web server, the request content containing the time and position of the mobile is stored in a sqlite database.  
 When the user reaches the web page, first he has to fill a form (username + password) to prove its identity. Then the web server returns a map with the marker notifying the last position of the mobile. The position of the mobile is refreshing every 10 seconds (default value) by running HTTP request in background.  
 A scheme worth better than long explanations.  
-![alt text](/img/principle.png "flowscheme" =794x800)  
+![flowscheme](/img/principle.png)  
 ## How running the application ?  
 I will explain here how to run the application in local, ie on your machine.  
 Clone the project:  
