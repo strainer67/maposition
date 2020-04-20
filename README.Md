@@ -22,7 +22,7 @@ When a valid HTTP request is received by the web server, the request content con
 When the user reaches the web page, first he has to fill a form (username + password) to prove its identity. Then the web server returns a map with the marker notifying the last position of the mobile. The position of the mobile is refreshing every 10 seconds (default value) by running HTTP request in background.  
 A scheme worth better than long explanations.  
 ![flowscheme](/img/principle.png)  
-## How running the application ?  
+## How to run the application ?  
 I will explain here how to run the application in local, ie on your machine.  
 Clone the project:  
 ```
