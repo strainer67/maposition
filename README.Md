@@ -6,14 +6,14 @@ Once this step is done a marker representing the mobile is displayed on the map.
 ![map](/img/maposition.png)  
 Some websites propose hosting like [PythonAnywhere.com](https://www.pythonanywhere.com/)
 ## Prerequisite
-This application has a sense only if a mobile send positions. A position has to be sent via a HTTP request (query string). By default, it has to respect this nomenclure:
+This application has a sense only if a mobile send positions. A position has to be sent via a HTTP request (POST request). By default, information (a string) is contained in the body of the request. The string has to respect this nomenclure:
 ```
-https://{my_website}/send_position?lat={lat_m}&lon={lon_m}&time={time_m}
+f'lat={lat_m}&lon={lon_m}&time={time_m}'
 ```
-where my_website is the domain name,  lat_m, lon_m the latitude and the longitude of the mobile in decimal degrees and time_m the UTC time of the position measurement. Time format has to be: %Y-%m-%dT%H:%M:%S.%fZ.
+where lat_m, lon_m are the latitude and the longitude of the mobile in decimal degrees and time_m the UTC time of the position measurement. Time format has to be: %Y-%m-%dT%H:%M:%S.%fZ.
 For example a valid request is:
 ```
-https://webposition.com/send_position?lat=48.58392&lon=7.74553&time=2020-03-17T12:00:00.00Z
+'lat=48.58392&lon=7.74553&time=2020-03-17T12:00:00.00Z'
 ```
 Some applications exist to send GPS position via HTTP request. As an example, the Android application [gpslogger](https://github.com/mendhak/gpslogger) developped by [mendahk](https://github.com/mendhak) can be cited.
 
