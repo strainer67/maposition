@@ -7,13 +7,14 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 import sqlite3
+from urllib.parse import parse_qs
 
 from Crypto.Cipher import AES
 from Crypto import Random
 from flask import Flask, redirect, render_template, request, url_for, make_response, session
 
 app = Flask(__name__)
-app.secret_key = os.urandom(12)
+app.secret_key = os.urandom(16)
 app.permanent_session_lifetime = timedelta(minutes=20)
 
 
@@ -64,13 +65,11 @@ class Content():
         self.iv = ""
 
     def parse(self):
+        body = parse_qs(self.request.data.decode(encoding='utf-8'))
         try:
-            self.utc_time = self.request.args.get('time')
-            self.latitude = self.request.args.get('lat')
-            self.longitude = self.request.args.get('lon')
-        except IndexError:
-            pass
-        try:
+            self.utc_time = body['time'][0]
+            self.latitude = body['lat'][0]
+            self.longitude = body['lon'][0]
             self.auth = self.request.headers['Authorization'].split()[1]
             self.auth = b64decode(self.auth).decode(encoding='utf-8')
             self.username, self.password = self.auth.split(':')
@@ -203,7 +202,7 @@ def map_my_position():
         return redirect(url_for("login"), code=302)
 
 
-@app.route('/send_position', methods=['GET'])
+@app.route('/send_position', methods=['POST'])
 def feed_db():
     content = Content(request)
     app.logger.info('Request received by the server')
