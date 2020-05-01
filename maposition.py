@@ -123,15 +123,15 @@ def fill_geojson(time, latitude, longitude):
 @app.route('/')
 def home():
     if 'username' in session:
-        return redirect(url_for("map_my_position"), code=302)
-    return redirect(url_for("login"), code=302)
+        return redirect(url_for("map_my_position"), code=301)
+    return redirect(url_for("login"), code=301)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         if 'username' in session:
-            return redirect(url_for("map_my_position"), code=302)
+            return redirect(url_for("map_my_position"), code=301)
         app.logger.info('Welcome to the login page')
         return render_template('login.html')
     if request.method == 'POST':
@@ -150,7 +150,7 @@ def login():
         session.permanent = True
         session['username'] = request.form['username']
         session['key_db'] = request.form['username'] + request.form['password']
-        return redirect(url_for("map_my_position"), code=302)
+        return redirect(url_for("map_my_position"), code=301)
 
 
 @app.route('/logout', methods=['GET'])
@@ -158,7 +158,7 @@ def logout():
     app.logger.info('Log out successfully')
     session.pop('username', None)
     session.pop('key_db', None)
-    return redirect(url_for("login"), code=302)
+    return redirect(url_for("login"), code=301)
 
 
 @app.route('/get_position', methods=['GET'])
@@ -191,7 +191,7 @@ def get_position():
         my_geojson = fill_geojson(time, latitude, longitude)
         return my_geojson
     else:
-        return redirect(url_for("login"), code=302)
+        return redirect(url_for("login"), code=301)
 
 
 @app.route('/my_position', methods=['GET'])
@@ -199,7 +199,7 @@ def map_my_position():
     if 'username' in session:
         return make_response((render_template('carte.html'), 201))
     else:
-        return redirect(url_for("login"), code=302)
+        return redirect(url_for("login"), code=301)
 
 
 @app.route('/send_position', methods=['POST'])
@@ -225,7 +225,7 @@ def feed_db():
             except IndexError:
                 app.logger.info('an unauthorized person tries to feed the database')
                 return make_response((render_template('unauthorized.html'), 401))
-        return make_response((request.query_string, 200))
+        return make_response(('Position updated', 200))
     else:
         app.logger.info('The content of the request is invalid')
         return make_response((render_template('badrequest.html'), 400))
