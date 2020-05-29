@@ -23,7 +23,7 @@ When the user reaches the web page, first he has to fill a form (username + pass
 A scheme worth better than long explanations.  
 ![flowscheme](/img/principle.png)  
 ## How to run the application ?  
-I will explain here how to run the application in local, ie on your machine.  
+I will explain in this section how to run the application in local, ie on your machine. For information about deployment , I wrote a documentation [here](/deployment/deployment.Md) giving the main steps. 
 Clone the project:  
 ```
 git clone git@github.com:strainer67/maposition.git
