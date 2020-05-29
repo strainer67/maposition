@@ -16,5 +16,5 @@ information that i could find on internet about Web deployment. I will give in t
 NB: For deployment it is adviced to use a production WGSI server, ie not Werkzeug, the native WGSI of Flask. Personnaly I used [Gunicorn](https://gunicorn.org/).   
 
 In order to complete the main ideas let's do a scheme:  
-![deployment](/deployment.png "deployment")
+![deployment](/deployment.png)
 
