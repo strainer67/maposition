@@ -3,6 +3,7 @@
 from base64 import b64decode
 from datetime import datetime, timedelta
 import hashlib
+from itertools import repeat
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -16,6 +17,9 @@ from flask import Flask, redirect, render_template, request, url_for, make_respo
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
 app.permanent_session_lifetime = timedelta(minutes=20)
+app.config['server_key_db'] = os.environ.get('server_key_db')
+if app.config['server_key_db'] is None or len(app.config['server_key_db']) != 32:
+    app.config['server_key_db'] = 'BTk5EJhrpdLJi4urDedZbhSzjCLPUuUn'
 
 
 class AESEncryption():
@@ -23,7 +27,7 @@ class AESEncryption():
     Encrypt and decrypt message using algorithm AES 256.
     """
     def __init__(self, encryption_key):
-        self.key = hashlib.sha256(bytes(encryption_key, 'utf-8')).digest()
+        self.key = encryption_key
         self.cipher_message = ""
         self.decrypted_message = ""
 
@@ -62,7 +66,6 @@ class Content():
         self.auth = ""
         self.username = ""
         self.password = ""
-        self.iv = ""
 
     def parse(self):
         body = parse_qs(self.request.data.decode(encoding='utf-8'))
@@ -89,15 +92,13 @@ class Content():
         except ValueError:
             pass
 
-    def encrypt(self):
-        key_db = f'{self.username}{self.password}'
-        self.iv = Random.get_random_bytes(16)
+    def encrypt(self, key_db, iv):
         encryption = AESEncryption(key_db)
-        encryption.encrypt(str(round(self.latitude, 5)), self.iv)
+        encryption.encrypt(str(round(self.latitude, 5)), iv)
         self.latitude = encryption.cipher_message
-        encryption.encrypt(str(round(self.longitude, 5)), self.iv)
+        encryption.encrypt(str(round(self.longitude, 5)), iv)
         self.longitude = encryption.cipher_message
-        encryption.encrypt(self.utc_time.strftime('%d-%m-%Y %H:%M:%S'), self.iv)
+        encryption.encrypt(self.utc_time.strftime('%d-%m-%Y %H:%M:%S'), iv)
         self.utc_time = encryption.cipher_message
 
 
@@ -149,7 +150,6 @@ def login():
         app.logger.info('Logged in successfully')
         session.permanent = True
         session['username'] = request.form['username']
-        session['key_db'] = request.form['username'] + request.form['password']
         return redirect(url_for("map_my_position"), code=301)
 
 
@@ -157,7 +157,6 @@ def login():
 def logout():
     app.logger.info('Log out successfully')
     session.pop('username', None)
-    session.pop('key_db', None)
     return redirect(url_for("login"), code=301)
 
 
@@ -176,8 +175,10 @@ def get_position():
             time_crypted = last_record[0]
             latitude_crypted = last_record[1]
             longitude_crypted = last_record[2]
+            username, server_key_db = session['username'], app.config['server_key_db']
+            key_db = bytes(f'{username}{server_key_db}'[:32], 'utf-8')
             iv = last_record[3]
-            encryption = AESEncryption(session['key_db'])
+            encryption = AESEncryption(key_db)
             encryption.decrypt(time_crypted, iv)
             time = encryption.decrypted_message
             encryption.decrypt(latitude_crypted, iv)
@@ -212,7 +213,10 @@ def feed_db():
         app.logger.info('The content of the request is valid')
         hash_username = hashlib.sha256(bytes(content.username, 'utf-8')).hexdigest()
         hash_password = hashlib.sha256(bytes(content.password, 'utf-8')).hexdigest()
-        content.encrypt()
+        server_key_db = app.config['server_key_db']
+        key_db = bytes(f'{content.username}{server_key_db}'[:32], 'utf-8')
+        iv = Random.get_random_bytes(16)
+        content.encrypt(key_db, iv)
         with sqlite3.connect('db/USERS_POSITIONS.db') as conn:
             cursor = conn.execute(f"SELECT id FROM users where username = '{hash_username}' and password = '{hash_password}'")
             try:
@@ -220,7 +224,7 @@ def feed_db():
                 user_id = record[0]
                 sql_insertion = """INSERT INTO positions(utc_time, latitude, longitude, iv, user_id) VALUES(?,?,?,?,?)"""
                 data = (content.utc_time, content.latitude, content.longitude,
-                        content.iv, user_id)
+                        iv, user_id)
                 conn.execute(sql_insertion, data)
             except IndexError:
                 app.logger.info('an unauthorized person tries to feed the database')

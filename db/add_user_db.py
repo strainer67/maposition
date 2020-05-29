@@ -12,8 +12,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
     username = args.username
     password = args.password
-    hash_username = hashlib.sha256(bytes(username, 'utf-8')).hexdigest()
-    hash_password = hashlib.sha256(bytes(password, 'utf-8')).hexdigest()
-    with sqlite3.connect('USERS_POSITIONS.db') as conn:
-        cur = conn.cursor()
-        cur.execute(f"INSERT INTO users(username, password) VALUES('{hash_username}', '{hash_password}')")
+    if 8 <= len(username) <= 32:
+        hash_username = hashlib.sha256(bytes(username, 'utf-8')).hexdigest()
+        hash_password = hashlib.sha256(bytes(password, 'utf-8')).hexdigest()
+        with sqlite3.connect('USERS_POSITIONS.db') as conn:
+            cur = conn.cursor()
+            cur.execute(f"INSERT INTO users(username, password) VALUES('{hash_username}', '{hash_password}')")
+    else:
+        msg = "Username has to contain between 8 and 32 chars"
+        raise ValueError(msg)
