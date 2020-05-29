@@ -44,7 +44,7 @@ Open a web browser and enter the following URL:
 ```
 http://127.0.0.1:5000/
 ```
-Fill the login form, by default identifiant field is **admin** and mot de passe field is **password**.  
+Fill the login form, by default identifiant field is **adminsys** and mot de passe field is **password**.  
 If you want to simulate a mobile sending its position to the server, you can run the script test.py:
 ```python
 python3 test.py
@@ -60,13 +60,13 @@ To Initialize a database:
 ```python
 python3 init_db.py
 ```
-To add a user in the database with username: **flower** and password: **lilac**:
+To add a user in the database with username: **flowerparadise** and password: **lilac**:
 ```python
-python3 add_user_db.py flower lilac
+python3 add_user_db.py flowerparadise lilac
 ```
-To remove the user **flower** in the database:
+To remove the user **flowerparadise** in the database:
 ```python
-python3 remove_user_db.py flower
+python3 remove_user_db.py flowerparadise
 ```
 ## Technical details
 The application was built with the python web framework Flask. For the front-end side HTML, CSS and the framework Bootstrap was used. As I already said, positions are stored in a SQLITE database. The username and the password are hashed in the database with the algorithm SHA-256, moreover each recording of latitude, longitude and time are encrypted in the database with the algorithm AES-256. The map is displayed thanks to the JavaScript library [Leaflet](https://leafletjs.com/) and position of the mobile is updated thanks to the Leaflet plugin [realtime](https://github.com/perliedman/leaflet-realtime). Map tiles are provided by [Openstreetmap](https://www.openstreetmap.org).  

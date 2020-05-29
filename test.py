@@ -8,7 +8,7 @@ import time
 
 if __name__ == "__main__":
     url = 'http://127.0.0.1:5000/send_position'
-    username = 'admin'
+    username = 'adminsys'
     password = 'password'
     while True:
         my_lat = round(random.uniform(48.55392, 48.61392), 8)
